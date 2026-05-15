@@ -1,8 +1,7 @@
 /**
  * @fileoverview A custom Web Component for displaying transient toast notifications.
  * @module Toast
- * @description This component manages the lifecycle, rendering, and removal of toast messages
- *              without relying on external CSS frameworks or libraries.
+ * @description This component manages the lifecycle, rendering, and removal of toast messages without relying on external CSS frameworks or libraries.
  */
 
 /**
