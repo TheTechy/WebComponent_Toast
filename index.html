@@ -1,0 +1,228 @@
+<!-- HTML Web Component - Toast -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toast Notification Test Page</title>
+    <script src="./src/toast.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg:        #f4f2ef;
+            --surface:   #eeebe6;
+            --border:    #dedad3;
+            --text-primary:   #2c2a27;
+            --text-secondary: #7a7670;
+            --text-muted:     #b0aca5;
+
+            --success-bg:     #dde8e1;
+            --success-text:   #2d5a3d;
+            --success-accent: #5a9470;
+
+            --error-bg:       #e8dddd;
+            --error-text:     #5a2d2d;
+            --error-accent:   #a05a5a;
+
+            --info-bg:        #dde1e8;
+            --info-text:      #2d3d5a;
+            --info-accent:    #5a7094;
+
+            --radius: 10px;
+            --transition: 150ms ease;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 60px 40px;
+            line-height: 1.6;
+        }
+
+        header {
+            max-width: 720px;
+            margin-bottom: 52px;
+        }
+
+        header h1 {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+        }
+
+        code {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85em;
+            background: var(--border);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        .controls-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--surface);
+            max-width: 720px;
+        }
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            transition: background-color var(--transition), border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        #successBtn {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border-color: color-mix(in srgb, var(--success-accent) 25%, transparent);
+        }
+        #successBtn .dot { background-color: var(--success-accent); }
+        #successBtn:hover {
+            background-color: color-mix(in srgb, var(--success-bg) 80%, var(--success-accent));
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--success-accent) 18%, transparent);
+        }
+
+        #errorBtn {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border-color: color-mix(in srgb, var(--error-accent) 25%, transparent);
+        }
+        #errorBtn .dot { background-color: var(--error-accent); }
+        #errorBtn:hover {
+            background-color: color-mix(in srgb, var(--error-bg) 80%, var(--error-accent));
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--error-accent) 18%, transparent);
+        }
+
+        #infoBtn {
+            background-color: var(--info-bg);
+            color: var(--info-text);
+            border-color: color-mix(in srgb, var(--info-accent) 25%, transparent);
+        }
+        #infoBtn .dot { background-color: var(--info-accent); }
+        #infoBtn:hover {
+            background-color: color-mix(in srgb, var(--info-bg) 80%, var(--info-accent));
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--info-accent) 18%, transparent);
+        }
+
+        .divider {
+            width: 100%;
+            max-width: 720px;
+            height: 1px;
+            background-color: var(--border);
+            margin: 48px 0;
+        }
+
+        .meta {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Toast Notification Demo</h1>
+        <p>Demonstrates the <code id="component-tag">&lt;toast-container&gt;</code> Web Component. Each button triggers a toast with a different type and duration.</p>
+    </header>
+
+    <p class="controls-label">Trigger</p>
+    <div class="controls">
+        <button id="successBtn">
+            <span class="dot"></span>
+            Success — 3s
+        </button>
+        <button id="errorBtn">
+            <span class="dot"></span>
+            Error — 5s
+        </button>
+        <button id="infoBtn">
+            <span class="dot"></span>
+            Info — 2s
+        </button>
+    </div>
+
+    <div class="divider"></div>
+    <p class="meta">toast-container · web component</p>
+
+    <toast-container id="toast-area"></toast-container>
+
+    <script>
+        const toastArea = document.getElementById('toast-area');
+		const showHideTime = 1000;
+
+        function showToast(message, type, duration) {
+            const cleanup = toastArea.showToast(message, type, duration);
+            console.log(`Toast shown: "${message}" (${type})`);
+            return cleanup;
+        }
+
+        document.getElementById('successBtn').addEventListener('click', () => {
+            const cleanup = showToast("Operation successful! Data saved.", 'success', (showHideTime * 3));
+        });
+
+        document.getElementById('errorBtn').addEventListener('click', () => {
+            showToast("Failed to connect to the server. Please try again.", 'error', (showHideTime * 5));
+        });
+
+        document.getElementById('infoBtn').addEventListener('click', () => {
+            const cleanup = showToast("Welcome! This is an informational message.", 'info', (showHideTime * 2.5));
+        });
+    </script>
+</body>
+</html>
